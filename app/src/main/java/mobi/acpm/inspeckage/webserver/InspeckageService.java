@@ -24,6 +24,7 @@ public class InspeckageService extends Service {
     }
 
     private WebServer ws;
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         // Let it continue running until it is stopped.
@@ -52,7 +53,7 @@ public class InspeckageService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(ws!=null)
+        if (ws != null)
             ws.stop();
 
         Toast.makeText(this, "Service stopped", Toast.LENGTH_LONG).show();

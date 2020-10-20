@@ -3,14 +3,7 @@ package mobi.acpm.inspeckage.util;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.PathPermission;
-import android.content.pm.PermissionInfo;
-import android.content.pm.ProviderInfo;
-import android.content.pm.ServiceInfo;
+import android.content.pm.*;
 
 import java.util.List;
 
@@ -327,7 +320,7 @@ public class PackageDetail {
 
     public String getGIDs() {
         String gidList = "";
-		if (mPInfo.gids != null && mPInfo.gids.length != 0) {
+        if (mPInfo.gids != null && mPInfo.gids.length != 0) {
             for (int gid : mPInfo.gids) {
                 gidList = gidList + "" + gid + "-";
             }
@@ -420,26 +413,26 @@ public class PackageDetail {
         sb.append(getSharedLibraries());
 
         FileUtil.writeToFile(mPrefs, sb.toString(), FileType.PACKAGE, "");
-                /**
-        FileUtil.writeToFile(mPrefs, "Package: " + getPackageName() + "\n", FileType.PACKAGE, "");
-        FileUtil.writeToFile(mPrefs, "Process Name: " + getProcessName() + "\n", FileType.PACKAGE, "");
-        FileUtil.writeToFile(mPrefs, "APK Dir: " + getApkDir() + "\n", FileType.PACKAGE, "");
-        FileUtil.writeToFile(mPrefs, "UID: " + getUID() + "\n", FileType.PACKAGE, "");
-        FileUtil.writeToFile(mPrefs, "GIDs: " + getGIDs() + "\n", FileType.PACKAGE, "");
-        FileUtil.writeToFile(mPrefs, "Is Debuggable: " + isDebuggable() + "\n", FileType.PACKAGE, "");
-        FileUtil.writeToFile(mPrefs, "Shared User ID: " + getSharedUserId() + "\n", FileType.PACKAGE, "");
+        /**
+         FileUtil.writeToFile(mPrefs, "Package: " + getPackageName() + "\n", FileType.PACKAGE, "");
+         FileUtil.writeToFile(mPrefs, "Process Name: " + getProcessName() + "\n", FileType.PACKAGE, "");
+         FileUtil.writeToFile(mPrefs, "APK Dir: " + getApkDir() + "\n", FileType.PACKAGE, "");
+         FileUtil.writeToFile(mPrefs, "UID: " + getUID() + "\n", FileType.PACKAGE, "");
+         FileUtil.writeToFile(mPrefs, "GIDs: " + getGIDs() + "\n", FileType.PACKAGE, "");
+         FileUtil.writeToFile(mPrefs, "Is Debuggable: " + isDebuggable() + "\n", FileType.PACKAGE, "");
+         FileUtil.writeToFile(mPrefs, "Shared User ID: " + getSharedUserId() + "\n", FileType.PACKAGE, "");
 
-        FileUtil.writeToFile(mPrefs, getRequestedPermissions(), FileType.PACKAGE, "");
-        FileUtil.writeToFile(mPrefs, getAppPermissions(), FileType.PACKAGE, "");
-        FileUtil.writeToFile(mPrefs, getExportedActivities(), FileType.PACKAGE, "");
-        FileUtil.writeToFile(mPrefs, getNonExportedActivities(), FileType.PACKAGE, "");
-        FileUtil.writeToFile(mPrefs, getExportedServices(), FileType.PACKAGE, "");
-        FileUtil.writeToFile(mPrefs, getNonExportedServices(), FileType.PACKAGE, "");
+         FileUtil.writeToFile(mPrefs, getRequestedPermissions(), FileType.PACKAGE, "");
+         FileUtil.writeToFile(mPrefs, getAppPermissions(), FileType.PACKAGE, "");
+         FileUtil.writeToFile(mPrefs, getExportedActivities(), FileType.PACKAGE, "");
+         FileUtil.writeToFile(mPrefs, getNonExportedActivities(), FileType.PACKAGE, "");
+         FileUtil.writeToFile(mPrefs, getExportedServices(), FileType.PACKAGE, "");
+         FileUtil.writeToFile(mPrefs, getNonExportedServices(), FileType.PACKAGE, "");
 
-        FileUtil.writeToFile(mPrefs, getExportedBroadcastReceivers(), FileType.PACKAGE, "");
-        FileUtil.writeToFile(mPrefs, getNonExportedBroadcastReceivers(), FileType.PACKAGE, "");
-        FileUtil.writeToFile(mPrefs, getExportedContentProvider(), FileType.PACKAGE, "");
-        FileUtil.writeToFile(mPrefs, getNonExportedContentProvider(), FileType.PACKAGE, "");
-        FileUtil.writeToFile(mPrefs, getSharedLibraries(), FileType.PACKAGE, "");**/
+         FileUtil.writeToFile(mPrefs, getExportedBroadcastReceivers(), FileType.PACKAGE, "");
+         FileUtil.writeToFile(mPrefs, getNonExportedBroadcastReceivers(), FileType.PACKAGE, "");
+         FileUtil.writeToFile(mPrefs, getExportedContentProvider(), FileType.PACKAGE, "");
+         FileUtil.writeToFile(mPrefs, getNonExportedContentProvider(), FileType.PACKAGE, "");
+         FileUtil.writeToFile(mPrefs, getSharedLibraries(), FileType.PACKAGE, "");**/
     }
 }

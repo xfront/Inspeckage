@@ -5,15 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Environment;
 import android.util.Log;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.RandomAccessFile;
+import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.MappedByteBuffer;
@@ -46,10 +38,10 @@ public class FileUtil {
 
             String absolutePath;
 
-            if (prefs.getBoolean(Config.SP_HAS_W_PERMISSION,false)) {
-                absolutePath = Environment.getExternalStorageDirectory().getAbsolutePath()+Config.P_ROOT+"/"+prefs.getString(Config.SP_PACKAGE,"");
+            if (prefs.getBoolean(Config.SP_HAS_W_PERMISSION, false)) {
+                absolutePath = Environment.getExternalStorageDirectory().getAbsolutePath() + Config.P_ROOT + "/" + prefs.getString(Config.SP_PACKAGE, "");
             } else {
-                absolutePath = prefs.getString(Config.SP_DATA_DIR, null)+Config.P_ROOT;
+                absolutePath = prefs.getString(Config.SP_DATA_DIR, null) + Config.P_ROOT;
             }
             boolean append = true;
             if (ft != null) {
@@ -168,9 +160,9 @@ public class FileUtil {
             String absolutePath;
 
             if (prefs.getBoolean(Config.SP_HAS_W_PERMISSION, false)) {
-                absolutePath = Environment.getExternalStorageDirectory().getAbsolutePath()+Config.P_ROOT+"/"+prefs.getString(Config.SP_PACKAGE,"");
+                absolutePath = Environment.getExternalStorageDirectory().getAbsolutePath() + Config.P_ROOT + "/" + prefs.getString(Config.SP_PACKAGE, "");
             } else {
-                absolutePath = prefs.getString(Config.SP_DATA_DIR, null)+Config.P_ROOT;
+                absolutePath = prefs.getString(Config.SP_DATA_DIR, null) + Config.P_ROOT;
             }
 
             switch (ft) {
@@ -269,9 +261,9 @@ public class FileUtil {
             String absolutePath;
 
             if (prefs.getBoolean(Config.SP_HAS_W_PERMISSION, false)) {
-                absolutePath = Environment.getExternalStorageDirectory().getAbsolutePath()+Config.P_ROOT+"/"+prefs.getString(Config.SP_PACKAGE,"")+"/"+ folderName;
+                absolutePath = Environment.getExternalStorageDirectory().getAbsolutePath() + Config.P_ROOT + "/" + prefs.getString(Config.SP_PACKAGE, "") + "/" + folderName;
             } else {
-                absolutePath = prefs.getString(Config.SP_DATA_DIR, null)+Config.P_ROOT+"/"+folderName;
+                absolutePath = prefs.getString(Config.SP_DATA_DIR, null) + Config.P_ROOT + "/" + folderName;
             }
 
             File folder = new File(absolutePath);
@@ -338,7 +330,7 @@ public class FileUtil {
     static void addDir(File srcFile, ZipOutputStream zos) throws IOException {
 
         File[] files = srcFile.listFiles();
-        if(files != null) {
+        if (files != null) {
             byte[] buffer = new byte[1024];
             for (File file : files) {
 
@@ -384,7 +376,7 @@ public class FileUtil {
                 absolutePath = prefs.getString(Config.SP_DATA_DIR, null) + Config.P_ROOT;
             }
 
-            absolutePath += "/"+name;
+            absolutePath += "/" + name;
             File file = new File(absolutePath);
 
             if (!file.exists()) {

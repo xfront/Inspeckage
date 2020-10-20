@@ -31,11 +31,12 @@ public class Fingerprint {
     private static Context mContext;
     private static SharedPreferences mPrefs;
 
-    public Fingerprint(Context context){
+    public Fingerprint(Context context) {
         mContext = context;
         mPrefs = context.getSharedPreferences(Module.PREFS, context.MODE_PRIVATE);
     }
-    public static Fingerprint getInstance(Context context){
+
+    public static Fingerprint getInstance(Context context) {
         if (instance == null)
             instance = new Fingerprint(context);
         return instance;
@@ -139,7 +140,8 @@ public class Fingerprint {
                 }
             }
 
-        } catch (SocketException ignored) {}
+        } catch (SocketException ignored) {
+        }
 
         return "";
     }

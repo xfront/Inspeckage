@@ -23,20 +23,19 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/package_inspector"
             android:id="@+id/textView4"
-            android:layout_gravity="center_horizontal"
-            />
+            android:layout_gravity="center_horizontal" />
+
         <Space
             android:layout_width="match_parent"
             android:layout_height="14dp"
-            android:layout_gravity="center_horizontal"/>
+            android:layout_gravity="center_horizontal" />
 
         <Switch
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/fragment_main_only_user"
-        android:id="@+id/only_user_app_switch"
-        android:checked="true" />
-
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/fragment_main_only_user"
+            android:id="@+id/only_user_app_switch"
+            android:checked="true" />
 
 
         <ExpandableListView
@@ -44,8 +43,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/appsListView"
             android:layout_gravity="center_horizontal"
-            android:background="@android:color/white"/>
-
+            android:background="@android:color/white" />
 
 
         <TextView
@@ -53,20 +51,23 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="..."
-            android:id="@+id/txtAppSelected"/>
+            android:id="@+id/txtAppSelected" />
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="14dp"
-            android:layout_gravity="center_horizontal"/>
+            android:layout_gravity="center_horizontal" />
+
         <View
             android:layout_width="fill_parent"
             android:layout_height="2dp"
-            android:background="#375a7f"/>
+            android:background="#375a7f" />
+
         <Space
             android:layout_width="match_parent"
             android:layout_height="14dp"
-            android:layout_gravity="center_horizontal"/>
+            android:layout_gravity="center_horizontal" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -86,46 +87,48 @@
         <Space
             android:layout_width="match_parent"
             android:layout_height="14dp"
-            android:layout_gravity="center_horizontal"/>
+            android:layout_gravity="center_horizontal" />
 
         <View
             android:layout_width="fill_parent"
             android:layout_height="2dp"
-            android:background="#375a7f"/>
+            android:background="#375a7f" />
+
         <Space
             android:layout_width="match_parent"
             android:layout_height="14dp"
-            android:layout_gravity="center_horizontal"/>
+            android:layout_gravity="center_horizontal" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/fragment_config_started"
-            android:id="@+id/textView7"/>
+            android:id="@+id/textView7" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="http://192.168.1.30:8008"
-            android:id="@+id/txtHost"/>
+            android:id="@+id/txtHost" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/fragment_config_access_adb"
-            android:id="@+id/textView9"/>
+            android:id="@+id/textView9" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="adb forward tcp:8008 tcp:8008"
-            android:id="@+id/txtAdb"/>
+            android:id="@+id/txtAdb" />
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="14dp"
-            android:layout_gravity="center_horizontal"/>
+            android:layout_gravity="center_horizontal" />
 
         <Button
             style="?android:attr/buttonStyleSmall"
@@ -134,7 +137,7 @@
             android:text="@string/fragment_config_launch"
             android:id="@+id/btnLaunchApp"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/btn_shape"/>
+            android:background="@drawable/btn_shape" />
 
         <LinearLayout
             android:orientation="horizontal"

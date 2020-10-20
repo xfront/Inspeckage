@@ -12,7 +12,7 @@ public class FingerprintItem {
     public String newValue;
     public boolean enable;
 
-    public FingerprintItem(String type, String name, String value, String newValue, boolean enable){
+    public FingerprintItem(String type, String name, String value, String newValue, boolean enable) {
         this.type = type;
         this.name = name;
         this.value = value;

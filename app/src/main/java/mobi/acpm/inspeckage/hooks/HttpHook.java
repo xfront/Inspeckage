@@ -60,17 +60,17 @@ public class HttpHook extends XC_MethodHook {
 
                 if (urlConn != null) {
                     StringBuilder sb = new StringBuilder();
-                    boolean connected = (boolean)getObjectField(param.thisObject, "connected");
+                    boolean connected = (boolean) getObjectField(param.thisObject, "connected");
 
-                    if(!connected){
+                    if (!connected) {
 
 
                         Map<String, List<String>> properties = urlConn.getRequestProperties();
                         if (properties != null && properties.size() > 0) {
 
 
-                            for (Map.Entry<String, List<String>> entry : properties.entrySet()){
-                                sb.append(entry.getKey()+": "+entry.getValue()+", ");
+                            for (Map.Entry<String, List<String>> entry : properties.entrySet()) {
+                                sb.append(entry.getKey() + ": " + entry.getValue() + ", ");
                             }
 
 /**
@@ -107,7 +107,7 @@ public class HttpHook extends XC_MethodHook {
                 if (urlConn != null) {
                     StringBuilder sb = new StringBuilder();
                     int code = urlConn.getResponseCode();
-                    if(code==200){
+                    if (code == 200) {
 
                         Map<String, List<String>> properties = urlConn.getHeaderFields();
                         if (properties != null && properties.size() > 0) {
@@ -128,7 +128,7 @@ public class HttpHook extends XC_MethodHook {
 
         try {
             final Class<?> okHttpClient = findClass("com.android.okhttp.OkHttpClient", loadPackageParam.classLoader);
-            if(okHttpClient != null) {
+            if (okHttpClient != null) {
                 findAndHookMethod(okHttpClient, "open", URI.class, new XC_MethodHook() {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
@@ -150,7 +150,7 @@ public class HttpHook extends XC_MethodHook {
             } else {
                 //com.squareup.okhttp.internal.http.HttpURLConnectionImpl
                 final Class<?> httpURLConnectionImpl = findClass("com.android.okhttp.internal.http.HttpURLConnectionImpl", loadPackageParam.classLoader);
-                if(httpURLConnectionImpl != null) {
+                if (httpURLConnectionImpl != null) {
                     findAndHookMethod("com.android.okhttp.internal.http.HttpURLConnectionImpl", loadPackageParam.classLoader, "getOutputStream", RequestHook);
                     findAndHookMethod("com.android.okhttp.internal.http.HttpURLConnectionImpl", loadPackageParam.classLoader, "getInputStream", ResponseHook);
                 }

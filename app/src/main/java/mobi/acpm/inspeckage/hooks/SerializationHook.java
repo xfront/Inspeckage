@@ -1,12 +1,6 @@
 package mobi.acpm.inspeckage.hooks;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
+import java.io.*;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedBridge;
@@ -24,6 +18,7 @@ public class SerializationHook extends XC_MethodHook {
     public static final String TAG = "Inspeckage_Serialization:";
 
     static String f = "";
+
     public static void initAllHooks(final XC_LoadPackage.LoadPackageParam loadPackageParam) {
 
 
@@ -54,7 +49,7 @@ public class SerializationHook extends XC_MethodHook {
                 if (paramObject != null) {
 
                     String name = paramObject.getClass().getCanonicalName();
-                    if(name != null) {
+                    if (name != null) {
                         if (name.length() > 5 && name.substring(0, 5).contains("java.") || name.substring(0, 5).contains("byte")) {
                             //do nothing
                         } else {

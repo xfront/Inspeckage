@@ -51,8 +51,8 @@ public class ProcessHook extends XC_MethodHook {
                     }
 
             );
-        }catch (Error e){
-            XposedBridge.log("ERROR_PROCESS: "+e.getMessage());
+        } catch (Error e) {
+            XposedBridge.log("ERROR_PROCESS: " + e.getMessage());
         }
     }
 }

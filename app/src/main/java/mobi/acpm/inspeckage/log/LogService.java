@@ -130,7 +130,7 @@ public class LogService extends Service {
                         while (isStarted) {
 
                             String name = mPrefs.getString(Config.SP_PACKAGE, "null");
-                            String ps = "su -c ps |grep "+name;
+                            String ps = "su -c ps |grep " + name;
                             Process p = Runtime.getRuntime().exec(ps);
                             BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
                             String var = "";

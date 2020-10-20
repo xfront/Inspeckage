@@ -25,7 +25,7 @@ public class HashHook extends XC_MethodHook {
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 
                 sb = new StringBuffer();
-                sb.append("Algorithm(" +param.args[0]+") [");
+                sb.append("Algorithm(" + param.args[0] + ") [");
             }
         });
 
@@ -33,7 +33,7 @@ public class HashHook extends XC_MethodHook {
 
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 
-                sb.append("" + Util.byteArrayToString((byte[]) param.args[0])+" : ");
+                sb.append("" + Util.byteArrayToString((byte[]) param.args[0]) + " : ");
             }
 
         });
@@ -42,7 +42,7 @@ public class HashHook extends XC_MethodHook {
 
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 
-                sb.append("" + Util.byteArrayToString((byte[]) param.args[0])+" : ");
+                sb.append("" + Util.byteArrayToString((byte[]) param.args[0]) + " : ");
             }
 
         });
@@ -62,7 +62,7 @@ public class HashHook extends XC_MethodHook {
 
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 
-                sb.append(Util.toHexString((byte[]) param.getResult())+"]");
+                sb.append(Util.toHexString((byte[]) param.getResult()) + "]");
 
                 XposedBridge.log(TAG + sb.toString());
                 sb = new StringBuffer();

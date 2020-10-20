@@ -15,22 +15,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.ExpandableListView;
-import android.widget.Switch;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import mobi.acpm.inspeckage.Module;
 import mobi.acpm.inspeckage.R;
@@ -66,10 +56,10 @@ public class MainFragment extends Fragment {
             mPrefs = context.getSharedPreferences(Module.PREFS, context.MODE_PRIVATE);
 
             String host = null;
-            if(!mPrefs.getString(Config.SP_SERVER_HOST, "All interfaces").equals("All interfaces")){
+            if (!mPrefs.getString(Config.SP_SERVER_HOST, "All interfaces").equals("All interfaces")) {
                 host = mPrefs.getString(Config.SP_SERVER_HOST, "All interfaces");
             }
-            startService(host,mPrefs.getInt(Config.SP_SERVER_PORT, 8008));
+            startService(host, mPrefs.getInt(Config.SP_SERVER_PORT, 8008));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -144,13 +134,13 @@ public class MainFragment extends Fragment {
         final Button button = (Button) view.findViewById(R.id.btnLaunchApp);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if(pd==null){
-                    pd = new PackageDetail(context, mPrefs.getString(Config.SP_PACKAGE,""));
+                if (pd == null) {
+                    pd = new PackageDetail(context, mPrefs.getString(Config.SP_PACKAGE, ""));
                 }
                 Intent i = pd.getLaunchIntent();
-                if(i!=null) {
+                if (i != null) {
                     startActivity(i);
-                }else{
+                } else {
                     Toast.makeText(context, "Launch Intent not found.", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -159,19 +149,19 @@ public class MainFragment extends Fragment {
         loadInterfaces();
 
         String scheme = "http://";
-        if(mPrefs.getBoolean(Config.SP_SWITCH_AUTH, false)) {
+        if (mPrefs.getBoolean(Config.SP_SWITCH_AUTH, false)) {
             scheme = "https://";
         }
 
         String port = String.valueOf(mPrefs.getInt(Config.SP_SERVER_PORT, 8008));
         String host = "";
-        if(mPrefs.getString(Config.SP_SERVER_HOST, "All interfaces").equals("All interfaces")){
+        if (mPrefs.getString(Config.SP_SERVER_HOST, "All interfaces").equals("All interfaces")) {
             String[] adds = mPrefs.getString(Config.SP_SERVER_INTERFACES, "--").split(",");
-            for(int i=0; i<adds.length; i++){
-                if(!adds[i].equals("All interfaces"))
-                    host = host + scheme + adds[i] + ":" + port+"\n";
+            for (int i = 0; i < adds.length; i++) {
+                if (!adds[i].equals("All interfaces"))
+                    host = host + scheme + adds[i] + ":" + port + "\n";
             }
-        }else{
+        } else {
             String ip = mPrefs.getString(Config.SP_SERVER_HOST, "127.0.0.1");
             host = scheme + ip + ":" + port;
 
@@ -184,7 +174,7 @@ public class MainFragment extends Fragment {
         txtHost.setText(host);
 
         TextView txtAdb = (TextView) view.findViewById(R.id.txtAdb);
-        txtAdb.setText("adb forward tcp:"+port+" tcp:"+port);
+        txtAdb.setText("adb forward tcp:" + port + " tcp:" + port);
 
         TextView txtAppSelected = (TextView) view.findViewById(R.id.txtAppSelected);
         txtAppSelected.setText(">>> " + mPrefs.getString(Config.SP_PACKAGE, "..."));
@@ -193,19 +183,19 @@ public class MainFragment extends Fragment {
         return view;
     }
 
-    public void loadInterfaces(){
+    public void loadInterfaces() {
 
         StringBuilder sb = new StringBuilder();
         sb.append("All interfaces,");
         try {
-            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements(); ) {
                 NetworkInterface netInterface = en.nextElement();
-                for (Enumeration<InetAddress> enumIpAddr = netInterface.getInetAddresses(); enumIpAddr.hasMoreElements();) {
+                for (Enumeration<InetAddress> enumIpAddr = netInterface.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
                     InetAddress inetAddress = enumIpAddr.nextElement();
                     String address = inetAddress.getHostAddress();
                     boolean isIPv4 = address.indexOf(':') < 0;
                     if (isIPv4) {
-                        sb.append(address+",");
+                        sb.append(address + ",");
                     }
                 }
             }
@@ -213,9 +203,10 @@ public class MainFragment extends Fragment {
             Log.e("Inspeckage_Error", ex.toString());
         }
         SharedPreferences.Editor edit = mPrefs.edit();
-        edit.putString(Config.SP_SERVER_INTERFACES, sb.toString().substring(0,sb.length()-1));
+        edit.putString(Config.SP_SERVER_INTERFACES, sb.toString().substring(0, sb.length() - 1));
         edit.apply();
     }
+
     @Override
     public void onDetach() {
         super.onDetach();

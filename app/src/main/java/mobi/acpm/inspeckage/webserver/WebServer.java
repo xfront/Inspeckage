@@ -16,65 +16,23 @@ import android.util.Log;
 
 import org.java_websocket.util.Base64;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.math.BigInteger;
-import java.security.GeneralSecurityException;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.UnrecoverableKeyException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.security.*;
+import java.util.*;
 
 import javax.net.ssl.KeyManagerFactory;
 import javax.security.auth.x500.X500Principal;
 
 import fi.iki.elonen.NanoHTTPD;
 import mobi.acpm.inspeckage.Module;
-import mobi.acpm.inspeckage.hooks.CryptoHook;
-import mobi.acpm.inspeckage.hooks.FileSystemHook;
-import mobi.acpm.inspeckage.hooks.HashHook;
-import mobi.acpm.inspeckage.hooks.HttpHook;
-import mobi.acpm.inspeckage.hooks.IPCHook;
-import mobi.acpm.inspeckage.hooks.MiscHook;
-import mobi.acpm.inspeckage.hooks.SQLiteHook;
-import mobi.acpm.inspeckage.hooks.SerializationHook;
-import mobi.acpm.inspeckage.hooks.SharedPrefsHook;
-import mobi.acpm.inspeckage.hooks.UserHooks;
-import mobi.acpm.inspeckage.hooks.WebViewHook;
+import mobi.acpm.inspeckage.hooks.*;
 import mobi.acpm.inspeckage.log.LogService;
 import mobi.acpm.inspeckage.receivers.InspeckageWebReceiver;
-import mobi.acpm.inspeckage.util.Config;
-import mobi.acpm.inspeckage.util.FileUtil;
-import mobi.acpm.inspeckage.util.Fingerprint;
-import mobi.acpm.inspeckage.util.PackageDetail;
-import mobi.acpm.inspeckage.util.Util;
+import mobi.acpm.inspeckage.util.*;
 
-import static mobi.acpm.inspeckage.util.FileType.APP_STRUCT;
-import static mobi.acpm.inspeckage.util.FileType.CRYPTO;
-import static mobi.acpm.inspeckage.util.FileType.FILESYSTEM;
-import static mobi.acpm.inspeckage.util.FileType.HASH;
-import static mobi.acpm.inspeckage.util.FileType.HTTP;
-import static mobi.acpm.inspeckage.util.FileType.IPC;
-import static mobi.acpm.inspeckage.util.FileType.MISC;
-import static mobi.acpm.inspeckage.util.FileType.PREFS;
-import static mobi.acpm.inspeckage.util.FileType.SERIALIZATION;
-import static mobi.acpm.inspeckage.util.FileType.SQLITE;
-import static mobi.acpm.inspeckage.util.FileType.USERHOOKS;
-import static mobi.acpm.inspeckage.util.FileType.WEBVIEW;
+import static mobi.acpm.inspeckage.util.FileType.*;
 
 /**
  * Created by acpm on 16/11/15.
@@ -86,7 +44,7 @@ public class WebServer extends fi.iki.elonen.NanoHTTPD {
     private KeyStore keyStore;
 
     public WebServer(String host, int port, Context context) throws IOException {
-        super(host,port);
+        super(host, port);
         mContext = context;
         mPrefs = mContext.getSharedPreferences(Module.PREFS, mContext.MODE_PRIVATE);
 
@@ -101,31 +59,30 @@ public class WebServer extends fi.iki.elonen.NanoHTTPD {
             }
 
             //use uuid as an alias, that way each installation has your own alias
-            if(mPrefs.getString(Config.KEYPAIR_ALIAS,"").equals("")) {
+            if (mPrefs.getString(Config.KEYPAIR_ALIAS, "").equals("")) {
                 SharedPreferences.Editor edit = mPrefs.edit();
                 edit.putString(Config.KEYPAIR_ALIAS, UUID.randomUUID().toString());
                 edit.apply();
             }
 
-            String alias = mPrefs.getString(Config.KEYPAIR_ALIAS,"");
+            String alias = mPrefs.getString(Config.KEYPAIR_ALIAS, "");
 
             boolean genNewKey = true;
             for (String key : keyAliases) {
-                if(key.equals(alias)){
+                if (key.equals(alias)) {
                     genNewKey = false;
                 }
             }
-            if(genNewKey) {
+            if (genNewKey) {
                 KeyPair keyPair = generateKeys(alias);
                 keyStore = KeyStore.getInstance("AndroidKeyStore");
                 keyStore.load(null);
             }
-        }
-        catch(Exception e) {
-            Log.e("Error",e.getMessage());
+        } catch (Exception e) {
+            Log.e("Error", e.getMessage());
         }
 
-        if(mPrefs.getBoolean(Config.SP_SWITCH_AUTH, false)) {
+        if (mPrefs.getBoolean(Config.SP_SWITCH_AUTH, false)) {
 
             KeyManagerFactory keyManagerFactory = null;
             try {
@@ -146,7 +103,7 @@ public class WebServer extends fi.iki.elonen.NanoHTTPD {
         KeyPair keyPair = null;
         try {
 
-            KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA","AndroidKeyStore");
+            KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA", "AndroidKeyStore");
 
             Calendar start = Calendar.getInstance();
             Calendar end = Calendar.getInstance();
@@ -154,9 +111,9 @@ public class WebServer extends fi.iki.elonen.NanoHTTPD {
 
             if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.M) {
 
-                KeyGenParameterSpec spec= new KeyGenParameterSpec.Builder(
+                KeyGenParameterSpec spec = new KeyGenParameterSpec.Builder(
                         alias,
-                        KeyProperties.PURPOSE_SIGN|KeyProperties.PURPOSE_VERIFY)
+                        KeyProperties.PURPOSE_SIGN | KeyProperties.PURPOSE_VERIFY)
                         .setCertificateSubject(new X500Principal("CN=Inspeckage, OU=ACPM, O=ACPM, C=BR"))
                         .setDigests(KeyProperties.DIGEST_SHA256, KeyProperties.DIGEST_SHA512)
                         .setSignaturePaddings(KeyProperties.SIGNATURE_PADDING_RSA_PKCS1)
@@ -169,7 +126,7 @@ public class WebServer extends fi.iki.elonen.NanoHTTPD {
                         .build();
 
                 keyGen.initialize(spec);
-            }else {
+            } else {
 
                 KeyPairGeneratorSpec spec = new KeyPairGeneratorSpec.Builder(mContext)
                         .setAlias(alias)
@@ -184,8 +141,8 @@ public class WebServer extends fi.iki.elonen.NanoHTTPD {
             }
 
             keyPair = keyGen.generateKeyPair();
-        } catch(GeneralSecurityException e) {
-            Log.d("Inspeckage_Exception: ",e.getMessage());
+        } catch (GeneralSecurityException e) {
+            Log.d("Inspeckage_Exception: ", e.getMessage());
         }
         return keyPair;
     }
@@ -194,7 +151,7 @@ public class WebServer extends fi.iki.elonen.NanoHTTPD {
 
         Response response = newFixedLengthResponse(Response.Status.OK, type, html);
         response.addHeader("Cache-Control", "public");
-        response.addHeader("Cache-Control", "max-age="+cacheTime);
+        response.addHeader("Cache-Control", "max-age=" + cacheTime);
         return response;
     }
 
@@ -211,7 +168,7 @@ public class WebServer extends fi.iki.elonen.NanoHTTPD {
 
         String uri = session.getUri();
 
-        if(mPrefs.getBoolean(Config.SP_SWITCH_AUTH, false)) {
+        if (mPrefs.getBoolean(Config.SP_SWITCH_AUTH, false)) {
             Map<String, String> headers = session.getHeaders();
 
             String authorization = headers.get("authorization");
@@ -354,7 +311,7 @@ public class WebServer extends fi.iki.elonen.NanoHTTPD {
 
                 if (mPrefs.getBoolean(Config.SP_GEOLOCATION_SW, false)) {
                     html = html.replace("#switchLoc#", "<input type='checkbox' name='savedLoc' data-size='mini' checked>");
-                }else {
+                } else {
                     html = html.replace("#switchLoc#", "<input type='checkbox' name='savedLoc' data-size='mini' unchecked>");
                 }
             }
@@ -456,7 +413,7 @@ public class WebServer extends fi.iki.elonen.NanoHTTPD {
             String state = parms.get("value");
             SharedPreferences.Editor edit = mPrefs.edit();
 
-            switch (tab){
+            switch (tab) {
                 case "shared":
                     edit.putBoolean(Config.SP_TAB_ENABLE_SHAREDP, Boolean.valueOf(state));
                     break;
@@ -660,7 +617,7 @@ public class WebServer extends fi.iki.elonen.NanoHTTPD {
         String selected = parms.get("selected");
 
         Intent i = new Intent(mContext, LogService.class);
-        i.putExtra("filter",selected);
+        i.putExtra("filter", selected);
         i.putExtra("port", mPrefs.getInt(Config.SP_WSOCKET_PORT, 8887));
 
         mContext.startService(i);
@@ -704,30 +661,30 @@ public class WebServer extends fi.iki.elonen.NanoHTTPD {
 
     private Response getUserHooks() {
 
-        String json = mPrefs.getString(Config.SP_USER_HOOKS,"");
+        String json = mPrefs.getString(Config.SP_USER_HOOKS, "");
         return ok("text/json", json);
     }
 
     private Response getUserReplaces() {
 
-        String json = mPrefs.getString(Config.SP_USER_REPLACES,"");
+        String json = mPrefs.getString(Config.SP_USER_REPLACES, "");
         return ok("text/json", json);
     }
 
     private Response getUserReturnReplaces() {
 
-        String json = mPrefs.getString(Config.SP_USER_RETURN_REPLACES,"");
+        String json = mPrefs.getString(Config.SP_USER_RETURN_REPLACES, "");
         return ok("text/json", json);
     }
 
     private Response getBuild() {
-        if(mPrefs.getString(Config.SP_FINGERPRINT_HOOKS,"").equals("")) {
+        if (mPrefs.getString(Config.SP_FINGERPRINT_HOOKS, "").equals("")) {
             Fingerprint.getInstance(mContext).load();
         }
 
-        String json = mPrefs.getString(Config.SP_FINGERPRINT_HOOKS,"");
-        json = json.replace("{\"fingerprintItems\":[{","[{");
-        json = json.replace("\"}]}","\"}]");
+        String json = mPrefs.getString(Config.SP_FINGERPRINT_HOOKS, "");
+        json = json.replace("{\"fingerprintItems\":[{", "[{");
+        json = json.replace("\"}]}", "\"}]");
         return ok("text/json", json);
     }
 
@@ -744,7 +701,7 @@ public class WebServer extends fi.iki.elonen.NanoHTTPD {
     private Response addBuild(Map<String, String> parms) {
 
         String json = parms.get("build");
-        json = "{\"fingerprintItems\":"+json+"}";
+        json = "{\"fingerprintItems\":" + json + "}";
         SharedPreferences.Editor edit = mPrefs.edit();
         edit.putString(Config.SP_FINGERPRINT_HOOKS, json);
         edit.apply();
@@ -818,7 +775,7 @@ public class WebServer extends fi.iki.elonen.NanoHTTPD {
 
         html = html.replace("#appName#", mPrefs.getString(Config.SP_APP_NAME, "AppName"));
 
-        String icon = "<img src=\"data:image/png;base64, "+mPrefs.getString(Config.SP_APP_ICON_BASE64, "AppIcon")+"\" width=\"80\" height=\"80\" />";
+        String icon = "<img src=\"data:image/png;base64, " + mPrefs.getString(Config.SP_APP_ICON_BASE64, "AppIcon") + "\" width=\"80\" height=\"80\" />";
         html = html.replace("#appIcon#", icon);
         html = html.replace("#appVersion#", mPrefs.getString(Config.SP_APP_VERSION, "Version"));
         html = html.replace("#uid#", mPrefs.getString(Config.SP_UID, "uid"));
@@ -847,7 +804,7 @@ public class WebServer extends fi.iki.elonen.NanoHTTPD {
     }
 
     private Response getLocation() {
-        String loc = mPrefs.getString(Config.SP_GEOLOCATION,"");
+        String loc = mPrefs.getString(Config.SP_GEOLOCATION, "");
         return ok(loc);
     }
 
@@ -996,11 +953,11 @@ public class WebServer extends fi.iki.elonen.NanoHTTPD {
         String nact = mPrefs.getString(Config.SP_N_EXP_ACTIVITIES, "N Exported Activities");
         String[] nactivities = nact.split("\n");
 
-        if(nactivities.length > 0){
+        if (nactivities.length > 0) {
             sb.append("<li role='separator' class='divider'></li>");
         }
         String disabled = "";
-        if(!mPrefs.getBoolean(Config.SP_APP_IS_RUNNING,false)){
+        if (!mPrefs.getBoolean(Config.SP_APP_IS_RUNNING, false)) {
             disabled = "class='disabled'";
         }
 
@@ -1009,9 +966,9 @@ public class WebServer extends fi.iki.elonen.NanoHTTPD {
 
                 if (activity.contains("PERM:")) {
                     String[] actInfo = activity.split("PERM:");
-                    sb.append("<li "+disabled+"><a href=\"#\" onclick=\"selectAct('" + actInfo[0].trim() + "');\">N " + actInfo[0].trim() + "</a></li>");
+                    sb.append("<li " + disabled + "><a href=\"#\" onclick=\"selectAct('" + actInfo[0].trim() + "');\">N " + actInfo[0].trim() + "</a></li>");
                 } else {
-                    sb.append("<li "+disabled+"><a href=\"#\" onclick=\"selectAct('" + activity + "');\">N " + activity + "</a></li>");
+                    sb.append("<li " + disabled + "><a href=\"#\" onclick=\"selectAct('" + activity + "');\">N " + activity + "</a></li>");
                 }
             }
         }
@@ -1047,14 +1004,15 @@ public class WebServer extends fi.iki.elonen.NanoHTTPD {
                     "<h4 class='panel-title'><a role='button' data-toggle='collapse' data-parent='#accordion' href='#collapse" + i + "' " +
                     "aria-expanded='true' aria-controls='collapse" + i + "'> " + k + " </a> </h4> </div> <div id='collapse" + i + "' " +
                     "class='panel-collapse collapse in' role='tabpanel' aria-labelledby='heading" + i + "'> " +
-                    "<div class='panel-body'><textarea rows='"+countLines(v)+"' style=\"border:none;width:100%\" readonly>" +v + "</textarea></div> </div> </div>";
+                    "<div class='panel-body'><textarea rows='" + countLines(v) + "' style=\"border:none;width:100%\" readonly>" + v + "</textarea></div> </div> </div>";
         }
 
         return prefs_files;
     }
-    private static int countLines(String str){
+
+    private static int countLines(String str) {
         String[] lines = str.split("\r\n|\r|\n");
-        return  lines.length+1;
+        return lines.length + 1;
     }
 
     //CONFIG
@@ -1150,7 +1108,7 @@ public class WebServer extends fi.iki.elonen.NanoHTTPD {
         Util.takeScreenshot(fileName);
 
         String sdcardPath = Environment.getExternalStorageDirectory().getAbsolutePath();
-        String absolutePath = sdcardPath + Config.P_ROOT + "/"+ fileName;
+        String absolutePath = sdcardPath + Config.P_ROOT + "/" + fileName;
 
         try {
             FileInputStream f = new FileInputStream(absolutePath);
@@ -1172,7 +1130,7 @@ public class WebServer extends fi.iki.elonen.NanoHTTPD {
 
         String sdcardPath = Environment.getExternalStorageDirectory().getAbsolutePath();
 
-        if(new File(sdcardPath + Config.P_ROOT ).exists() && new File("/storage/emulated/legacy").exists()){
+        if (new File(sdcardPath + Config.P_ROOT).exists() && new File("/storage/emulated/legacy").exists()) {
             sdcardPath = "/storage/emulated/legacy";
         }
 
@@ -1203,7 +1161,7 @@ public class WebServer extends fi.iki.elonen.NanoHTTPD {
             String fullPath = mPrefs.getString(Config.SP_DATA_DIR, "") + Config.P_ROOT;
 
             if (mPrefs.getBoolean(Config.SP_HAS_W_PERMISSION, false)) {
-                fullPath = sdcardPath + "/" + Config.P_ROOT+ "/"+ mPrefs.getString(Config.SP_PACKAGE,"");
+                fullPath = sdcardPath + "/" + Config.P_ROOT + "/" + mPrefs.getString(Config.SP_PACKAGE, "");
             }
 
             FileUtil.zipFolder(fullPath, fullZipPath);
@@ -1284,14 +1242,14 @@ public class WebServer extends fi.iki.elonen.NanoHTTPD {
         intent.putExtra("mimetype", mimetype);
         intent.putExtra("category", category);
 
-        if(mPrefs.getBoolean(Config.SP_APP_IS_RUNNING,false)){
+        if (mPrefs.getBoolean(Config.SP_APP_IS_RUNNING, false)) {
             mContext.sendBroadcast(intent, null);
-        }else {
+        } else {
             Intent i = new Intent();
             i.setClassName(mPrefs.getString(Config.SP_PACKAGE, ""), activity);
 
             //FLAGS
-            if(!flags.trim().equals("")) {
+            if (!flags.trim().equals("")) {
                 Field[] fields = Intent.class.getFields();
                 for (Field f : fields) {
 
@@ -1305,54 +1263,54 @@ public class WebServer extends fi.iki.elonen.NanoHTTPD {
                         e.printStackTrace();
                     }
                 }
-            }else{
+            } else {
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             }
 
             //DATA_URI
-            if(!data_uri.trim().equals("")){
+            if (!data_uri.trim().equals("")) {
                 Uri u = Uri.parse(data_uri);
                 i.setData(u);
             }
 
-            if(!category.trim().equals("")){
+            if (!category.trim().equals("")) {
                 i.addCategory(category);
             }
 
-            if(!mimetype.trim().equals("")){
+            if (!mimetype.trim().equals("")) {
                 i.normalizeMimeType(mimetype);
             }
 
-            if(!extra.trim().equals("")){
+            if (!extra.trim().equals("")) {
 
                 String[] extras = new String[]{extra};
-                if(extra.contains(";")){
+                if (extra.contains(";")) {
                     extras = extra.split(";");
                 }
 
-                for(String e : extras){
+                for (String e : extras) {
                     String[] values = e.split(",");
 
-                    if(values.length==3){
+                    if (values.length == 3) {
 
-                        if(values[0].trim().toLowerCase().equals("string")){
-                            i.putExtra(values[1],values[2]);
+                        if (values[0].trim().toLowerCase().equals("string")) {
+                            i.putExtra(values[1], values[2]);
                         }
 
-                        if(values[0].trim().toLowerCase().equals("boolean")){
-                            i.putExtra(values[1],Boolean.valueOf(values[2]));
+                        if (values[0].trim().toLowerCase().equals("boolean")) {
+                            i.putExtra(values[1], Boolean.valueOf(values[2]));
                         }
 
-                        if(values[0].trim().toLowerCase().equals("int")){
+                        if (values[0].trim().toLowerCase().equals("int")) {
                             i.putExtra(values[1], Integer.valueOf(values[2]));
                         }
 
-                        if(values[0].trim().toLowerCase().equals("float")){
-                            i.putExtra(values[1],Float.valueOf(values[2]));
+                        if (values[0].trim().toLowerCase().equals("float")) {
+                            i.putExtra(values[1], Float.valueOf(values[2]));
                         }
 
-                        if(values[0].trim().toLowerCase().equals("double")){
-                            i.putExtra(values[1],Double.valueOf(values[2]));
+                        if (values[0].trim().toLowerCase().equals("double")) {
+                            i.putExtra(values[1], Double.valueOf(values[2]));
                         }
                     }
                 }
@@ -1384,7 +1342,7 @@ public class WebServer extends fi.iki.elonen.NanoHTTPD {
             case "serialization": {
                 html = FileUtil.readFromFile(mPrefs, SERIALIZATION).replace(SerializationHook.TAG, "");
 
-                if(!html.equals("")) {
+                if (!html.equals("")) {
                     String[] x = html.split("</br>");
                     for (int i = 0; i < x.length; i++) {
 
@@ -1439,7 +1397,7 @@ public class WebServer extends fi.iki.elonen.NanoHTTPD {
             case "fs": {
                 html = FileUtil.readFromFile(mPrefs, FILESYSTEM).replace(FileSystemHook.TAG, "");
 
-                if(!html.equals("")) {
+                if (!html.equals("")) {
                     String[] x = html.split("</br>");
                     for (int i = 0; i < x.length; i++) {
                         x[i] = "<span class=\"label label-info\">" + (i + 1) + "</span>   " + x[i];
@@ -1472,7 +1430,7 @@ public class WebServer extends fi.iki.elonen.NanoHTTPD {
             }
             case "misc": {
                 html = FileUtil.readFromFile(mPrefs, MISC).replace(MiscHook.TAG, "");
-                if(!html.equals("")) {
+                if (!html.equals("")) {
                     String[] x = html.split("</br>");
                     for (int i = 0; i < x.length; i++) {
                         if (x[i].length() > 170) {
@@ -1509,7 +1467,7 @@ public class WebServer extends fi.iki.elonen.NanoHTTPD {
             }
             case "http": {
                 html = FileUtil.readFromFile(mPrefs, HTTP).replace(HttpHook.TAG, "");
-                if(!html.equals("")) {
+                if (!html.equals("")) {
                     String[] x = html.split("</br>");
                     for (int i = 0; i < x.length; i++) {
 
@@ -1554,7 +1512,7 @@ public class WebServer extends fi.iki.elonen.NanoHTTPD {
             }
             case "wv": {
                 html = FileUtil.readFromFile(mPrefs, WEBVIEW).replace(WebViewHook.TAG, "");
-                if(!html.equals("")) {
+                if (!html.equals("")) {
                     String[] x = html.split("</br>");
                     for (int i = 0; i < x.length; i++) {
                         if (x[i].contains("addJavascriptInterface(Object, ")) {
@@ -1600,7 +1558,7 @@ public class WebServer extends fi.iki.elonen.NanoHTTPD {
             }
             case "ipc": {
                 html = FileUtil.readFromFile(mPrefs, IPC).replace(IPCHook.TAG, "");
-                if(!html.equals("")) {
+                if (!html.equals("")) {
                     String[] x = html.split("</br>");
                     for (int i = 0; i < x.length; i++) {
                         x[i] = "<span class=\"label label-default\">" + (i + 1) + "</span>   " + x[i];
@@ -1633,7 +1591,7 @@ public class WebServer extends fi.iki.elonen.NanoHTTPD {
             }
             case "crypto": {
                 html = FileUtil.readFromFile(mPrefs, CRYPTO).replace(CryptoHook.TAG, "");
-                if(!html.equals("")) {
+                if (!html.equals("")) {
                     String[] x = html.split("</br>");
 
                     for (int i = 0; i < x.length; i++) {
@@ -1688,7 +1646,7 @@ public class WebServer extends fi.iki.elonen.NanoHTTPD {
             }
             case "prefs": {
                 html = FileUtil.readFromFile(mPrefs, PREFS).replace(SharedPrefsHook.TAG, "");
-                if(!html.equals("")) {
+                if (!html.equals("")) {
                     String[] x = html.split("</br>");
                     for (int i = 0; i < x.length; i++) {
 
@@ -1737,7 +1695,7 @@ public class WebServer extends fi.iki.elonen.NanoHTTPD {
             case "hash": {
 
                 html = FileUtil.readFromFile(mPrefs, HASH).replace(HashHook.TAG, "");
-                if(!html.equals("")) {
+                if (!html.equals("")) {
                     String[] x = html.split("</br>");
 
                     for (int i = 0; i < x.length; i++) {
@@ -1793,7 +1751,7 @@ public class WebServer extends fi.iki.elonen.NanoHTTPD {
             case "sqlite": {
                 html = FileUtil.readFromFile(mPrefs, SQLITE).replace(SQLiteHook.TAG, "");
 
-                if(!html.equals("")) {
+                if (!html.equals("")) {
                     String[] x = html.split("</br>");
                     for (int i = 0; i < x.length; i++) {
 
@@ -1847,7 +1805,7 @@ public class WebServer extends fi.iki.elonen.NanoHTTPD {
             case "userhooks": {
                 html = FileUtil.readFromFile(mPrefs, USERHOOKS).replace(UserHooks.TAG, "");
 
-                if(!html.equals("")) {
+                if (!html.equals("")) {
                     String[] x = html.split("</br>");
                     for (int i = 0; i < x.length; i++) {
 

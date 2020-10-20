@@ -84,24 +84,25 @@ public class MainActivity extends AppCompatActivity
                         e.printStackTrace();
                     }
                     String advertId = null;
-                    try{
+                    try {
                         advertId = idInfo.getId();
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                     return advertId;
                 }
+
                 @Override
                 protected void onPostExecute(String advertId) {
                     SharedPreferences.Editor editor = mPrefs.edit();
-                    editor.putString(Config.SP_ADS_ID,advertId);
+                    editor.putString(Config.SP_ADS_ID, advertId);
                     editor.apply();
                     //Toast.makeText(getApplicationContext(), advertId, Toast.LENGTH_SHORT).show();
                 }
             };
             task.execute();
 
-        }else{
+        } else {
             File inspeckage = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + Config.P_ROOT);
             if (!inspeckage.exists()) {
                 inspeckage.mkdirs();
@@ -126,18 +127,18 @@ public class MainActivity extends AppCompatActivity
                 }
                 return;
             }
-            case 1:{
+            case 1: {
                 return;
             }
         }
     }
 
-    private void hideItem()
-    {
+    private void hideItem() {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         Menu nav_Menu = navigationView.getMenu();
         nav_Menu.findItem(R.id.nav_auth).setVisible(false);
     }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -188,7 +189,7 @@ public class MainActivity extends AppCompatActivity
 
             clearAll();
             TextView txtAppSelected = (TextView) findViewById(R.id.txtAppSelected);
-            if(txtAppSelected!=null) {
+            if (txtAppSelected != null) {
                 txtAppSelected.setText("... ");
             }
 
@@ -221,7 +222,7 @@ public class MainActivity extends AppCompatActivity
             sendIntent.setType("text/plain");
             startActivity(sendIntent);
 
-        }else{
+        } else {
 
             MainFragment mainFragment = new MainFragment();
             fragmentTransaction.replace(R.id.container, mainFragment);
@@ -238,7 +239,7 @@ public class MainActivity extends AppCompatActivity
         stopService(new Intent(this, InspeckageService.class));
     }
 
-    private void clearAll(){
+    private void clearAll() {
         SharedPreferences.Editor edit = mPrefs.edit();
 
         String appPath = Environment.getExternalStorageDirectory().getAbsolutePath();

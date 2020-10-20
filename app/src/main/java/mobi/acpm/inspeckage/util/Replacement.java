@@ -39,8 +39,8 @@ public class Replacement {
                                 if (item.paramMatch != null && item.paramMatch.toString().trim() != "") {
                                     if (item.paramMatch.equals(param.args[p])) {
                                         param.args[p] = item.paramNewValue;
-                                    }else if(((String)param.args[p]).contains((String)item.paramMatch)){
-                                        ((String)param.args[p]).replace((String)item.paramMatch,(String)item.paramNewValue);
+                                    } else if (((String) param.args[p]).contains((String) item.paramMatch)) {
+                                        ((String) param.args[p]).replace((String) item.paramMatch, (String) item.paramNewValue);
                                     }
                                 } else {
                                     param.args[p] = item.paramNewValue;
@@ -58,19 +58,19 @@ public class Replacement {
                                 String v = Util.byteArrayToString((byte[]) param.args[p]);
 
                                 /**
-                                String originalValue = v;
+                                 String originalValue = v;
 
-                                if(v.contains("{\"body")) {
-                                    XposedBridge.log(UserHooks.TAG+" PROJETOX REQUEST" + originalValue);
-                                }else if(v.contains("{")){
-                                    XposedBridge.log(UserHooks.TAG+" PROJETOX RESPONSE" + originalValue);
-                                }
-                                **/
+                                 if(v.contains("{\"body")) {
+                                 XposedBridge.log(UserHooks.TAG+" PROJETOX REQUEST" + originalValue);
+                                 }else if(v.contains("{")){
+                                 XposedBridge.log(UserHooks.TAG+" PROJETOX RESPONSE" + originalValue);
+                                 }
+                                 **/
                                 if (item.paramMatch != null && !item.paramMatch.toString().trim().equals("")) {
 
-                                    if(v.contains(item.paramMatch.toString())){
+                                    if (v.contains(item.paramMatch.toString())) {
                                         //XposedBridge.log(UserHooks.TAG+" PROJETOX - OLD - "+originalValue);
-                                        String newValue = v.replace(item.paramMatch.toString(),item.paramNewValue.toString());
+                                        String newValue = v.replace(item.paramMatch.toString(), item.paramNewValue.toString());
                                         param.args[p] = newValue.getBytes();
                                         //XposedBridge.log(UserHooks.TAG+" PROJETOX - NEW - "+newValue);
                                     }
@@ -303,7 +303,7 @@ public class Replacement {
     }
 }
 
-class ReplaceParamItem{
+class ReplaceParamItem {
     protected int id;
     protected String classMethod;
     protected int position;
@@ -312,11 +312,12 @@ class ReplaceParamItem{
     protected Object paramNewValue;
     protected boolean state;
 }
-class ReplaceParamList{
+
+class ReplaceParamList {
     protected List<ReplaceParamItem> replaceParamItems;
 }
 
-class ReplaceReturnItem{
+class ReplaceReturnItem {
     protected int id;
     protected String classMethod;
     protected Object returnType;
@@ -325,6 +326,6 @@ class ReplaceReturnItem{
     protected boolean state;
 }
 
-class ReplaceReturnList{
+class ReplaceReturnList {
     protected List<ReplaceReturnItem> replaceReturnItems;
 }

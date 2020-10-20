@@ -29,10 +29,10 @@ public class IPCHook extends XC_MethodHook {
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                         Intent[] it = (Intent[]) param.args[0];
                         StringBuffer sb = new StringBuffer();
-                        for(Intent i : it){
-                            sb.append(i+",");
+                        for (Intent i : it) {
+                            sb.append(i + ",");
                         }
-                        XposedBridge.log(TAG + "startActivities: "+sb.toString().substring(0,sb.length()-1));
+                        XposedBridge.log(TAG + "startActivities: " + sb.toString().substring(0, sb.length() - 1));
                     }
                 });
 
@@ -41,7 +41,7 @@ public class IPCHook extends XC_MethodHook {
 
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                         Intent intent = (Intent) param.args[0];
-                        XposedBridge.log(TAG + "startService: "+intent);
+                        XposedBridge.log(TAG + "startService: " + intent);
                     }
                 });
 
@@ -50,7 +50,7 @@ public class IPCHook extends XC_MethodHook {
 
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                         Intent intent = (Intent) param.args[0];
-                        XposedBridge.log(TAG + "startActivity: "+intent);
+                        XposedBridge.log(TAG + "startActivity: " + intent);
                     }
                 });
 
@@ -60,7 +60,7 @@ public class IPCHook extends XC_MethodHook {
 
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                         Intent intent = (Intent) param.args[0];
-                        XposedBridge.log(TAG + "startActivity: "+intent);
+                        XposedBridge.log(TAG + "startActivity: " + intent);
                     }
                 });
 
@@ -69,7 +69,7 @@ public class IPCHook extends XC_MethodHook {
 
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                         Intent intent = (Intent) param.args[0];
-                        if(intent !=null && !intent.getAction().contains("mobi.acpm.inspeckage")) {
+                        if (intent != null && !intent.getAction().contains("mobi.acpm.inspeckage")) {
                             XposedBridge.log(TAG + "sendBroadcast: " + intent);
                         }
                     }
@@ -80,7 +80,7 @@ public class IPCHook extends XC_MethodHook {
 
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                         Intent intent = (Intent) param.args[0];
-                        if(intent !=null && !intent.getAction().contains("mobi.acpm.inspeckage")) {
+                        if (intent != null && !intent.getAction().contains("mobi.acpm.inspeckage")) {
                             XposedBridge.log(TAG + "sendBroadcast: " + intent);
                         }
                     }
@@ -93,10 +93,10 @@ public class IPCHook extends XC_MethodHook {
                         IntentFilter intentFilter = (IntentFilter) param.args[1];
                         StringBuffer sb = new StringBuffer();
                         sb.append("Actions: ");
-                        for(int i=0; i<intentFilter.countActions(); i++){
-                            sb.append(intentFilter.getAction(i)+",");
+                        for (int i = 0; i < intentFilter.countActions(); i++) {
+                            sb.append(intentFilter.getAction(i) + ",");
                         }
-                        if(!sb.toString().contains("mobi.acpm.inspeckage")) {
+                        if (!sb.toString().contains("mobi.acpm.inspeckage")) {
                             XposedBridge.log(TAG + "registerReceiver: " + sb.toString().substring(0, sb.length() - 1));
                         }
                     }
@@ -109,15 +109,15 @@ public class IPCHook extends XC_MethodHook {
                         IntentFilter intentFilter = (IntentFilter) param.args[1];
                         StringBuffer sb = new StringBuffer();
                         sb.append("Actions: ");
-                        for(int i=0; i<intentFilter.countActions(); i++){
-                            sb.append(intentFilter.getAction(i)+",");
+                        for (int i = 0; i < intentFilter.countActions(); i++) {
+                            sb.append(intentFilter.getAction(i) + ",");
                         }
 
-                        if(param.args[2] != null){
-                        sb.append(" Permissions: "+param.args[2]);
+                        if (param.args[2] != null) {
+                            sb.append(" Permissions: " + param.args[2]);
                         }
 
-                        if(!sb.toString().contains("mobi.acpm.inspeckage")) {
+                        if (!sb.toString().contains("mobi.acpm.inspeckage")) {
                             XposedBridge.log(TAG + "registerReceiver: " + sb.toString().substring(0, sb.length() - 1));
                         }
                     }

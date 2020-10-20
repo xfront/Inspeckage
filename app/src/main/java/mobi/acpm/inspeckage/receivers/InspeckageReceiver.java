@@ -28,7 +28,7 @@ public class InspeckageReceiver extends BroadcastReceiver {
             this.activity = (Activity) obj;
         } else if (obj instanceof Fragment) {
             activity = ((Fragment) obj).getActivity();
-        }else{
+        } else {
             XposedBridge.log(Module.ERROR + " >>>> Receiver");
         }
     }
@@ -82,7 +82,7 @@ public class InspeckageReceiver extends BroadcastReceiver {
                     }
 
                     //FLAGS
-                    if(!flags.trim().equals("")) {
+                    if (!flags.trim().equals("")) {
                         Field[] fields = Intent.class.getFields();
                         for (Field f : fields) {
 
@@ -96,54 +96,54 @@ public class InspeckageReceiver extends BroadcastReceiver {
                                 e.printStackTrace();
                             }
                         }
-                    }else{
+                    } else {
                         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     }
 
                     //DATA_URI
-                    if(!uri.trim().equals("")){
+                    if (!uri.trim().equals("")) {
                         Uri u = Uri.parse(uri);
                         i.setData(u);
                     }
 
-                    if(!category.trim().equals("")){
+                    if (!category.trim().equals("")) {
                         i.addCategory(category);
                     }
 
-                    if(!mimetype.trim().equals("")){
+                    if (!mimetype.trim().equals("")) {
                         i.normalizeMimeType(mimetype);
                     }
 
-                    if(!extras.trim().equals("")){
+                    if (!extras.trim().equals("")) {
 
                         String[] extra = new String[]{extras};
-                        if(extras.contains(";")){
+                        if (extras.contains(";")) {
                             extra = extras.split(";");
                         }
 
-                        for(String e : extra){
+                        for (String e : extra) {
                             String[] values = e.split(",");
 
-                            if(values.length==3){
+                            if (values.length == 3) {
 
-                                if(values[0].trim().toLowerCase().equals("string")){
-                                    i.putExtra(values[1],values[2]);
+                                if (values[0].trim().toLowerCase().equals("string")) {
+                                    i.putExtra(values[1], values[2]);
                                 }
 
-                                if(values[0].trim().toLowerCase().equals("boolean")){
-                                    i.putExtra(values[1],Boolean.valueOf(values[2]));
+                                if (values[0].trim().toLowerCase().equals("boolean")) {
+                                    i.putExtra(values[1], Boolean.valueOf(values[2]));
                                 }
 
-                                if(values[0].trim().toLowerCase().equals("int")){
+                                if (values[0].trim().toLowerCase().equals("int")) {
                                     i.putExtra(values[1], Integer.valueOf(values[2]));
                                 }
 
-                                if(values[0].trim().toLowerCase().equals("float")){
-                                    i.putExtra(values[1],Float.valueOf(values[2]));
+                                if (values[0].trim().toLowerCase().equals("float")) {
+                                    i.putExtra(values[1], Float.valueOf(values[2]));
                                 }
 
-                                if(values[0].trim().toLowerCase().equals("double")){
-                                    i.putExtra(values[1],Double.valueOf(values[2]));
+                                if (values[0].trim().toLowerCase().equals("double")) {
+                                    i.putExtra(values[1], Double.valueOf(values[2]));
                                 }
                             }
                         }
@@ -173,7 +173,7 @@ public class InspeckageReceiver extends BroadcastReceiver {
                     i.putExtra("isRunning", true);
 
                     int pid = android.os.Process.myPid();
-                    i.putExtra("PID",pid);
+                    i.putExtra("PID", pid);
 
                     activity.sendBroadcast(i, null);
 

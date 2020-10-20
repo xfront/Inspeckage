@@ -32,7 +32,7 @@
         <Space
             android:layout_width="match_parent"
             android:layout_height="14dp"
-            android:layout_gravity="center_horizontal"/>
+            android:layout_gravity="center_horizontal" />
 
         <RadioGroup
             android:id="@+id/radiogroup"
@@ -41,10 +41,11 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:orientation="vertical"></RadioGroup>
+
         <Space
             android:layout_width="match_parent"
             android:layout_height="14dp"
-            android:layout_gravity="center_horizontal"/>
+            android:layout_gravity="center_horizontal" />
 
         <TextView
             android:layout_width="wrap_content"

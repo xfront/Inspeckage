@@ -130,7 +130,7 @@ public class FingerprintHook extends XC_MethodHook {
                 }
             } catch (JsonSyntaxException ex) {
                 log(TAG + ex.getMessage());
-            }catch (NoSuchMethodError ex) {
+            } catch (NoSuchMethodError ex) {
                 log(TAG + ex.getMessage());
             }
         } catch (XposedHelpers.ClassNotFoundError ex) {

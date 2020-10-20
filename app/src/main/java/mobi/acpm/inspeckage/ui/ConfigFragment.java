@@ -11,11 +11,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.TextView;
+import android.widget.*;
 
 import mobi.acpm.inspeckage.Module;
 import mobi.acpm.inspeckage.R;
@@ -96,7 +92,8 @@ public class ConfigFragment extends Fragment {
         String h = mPrefs.getString(Config.SP_SERVER_HOST, "All interfaces");
         RadioGroup radioGroup = new RadioGroup(view.getContext());
         radioGroup.setOrientation(LinearLayout.VERTICAL);
-        final String[] address = mPrefs.getString(Config.SP_SERVER_INTERFACES, "--").split(",");;
+        final String[] address = mPrefs.getString(Config.SP_SERVER_INTERFACES, "--").split(",");
+        ;
         for (int i = 0; i < address.length; i++) {
             RadioButton rdbtn = new RadioButton(view.getContext());
             rdbtn.setId(i);
@@ -134,10 +131,10 @@ public class ConfigFragment extends Fragment {
                 stopService();
 
                 String host = null;
-                if(!mPrefs.getString(Config.SP_SERVER_HOST, "All interfaces").equals("All interfaces")){
+                if (!mPrefs.getString(Config.SP_SERVER_HOST, "All interfaces").equals("All interfaces")) {
                     host = mPrefs.getString(Config.SP_SERVER_HOST, "All interfaces");
                 }
-                startService(host,Integer.parseInt(txtPort.getText().toString()));
+                startService(host, Integer.parseInt(txtPort.getText().toString()));
 
                 TextView txtWSPort = (TextView) view.findViewById(R.id.txtWSPort);
 
@@ -172,7 +169,6 @@ public class ConfigFragment extends Fragment {
             //        + " must implement OnFragmentInteractionListener");
         }
     }
-
 
 
     @Override

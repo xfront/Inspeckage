@@ -7,30 +7,9 @@ import android.os.Looper;
 
 import java.io.File;
 
-import de.robv.android.xposed.IXposedHookLoadPackage;
-import de.robv.android.xposed.IXposedHookZygoteInit;
-import de.robv.android.xposed.XC_MethodHook;
-import de.robv.android.xposed.XC_MethodReplacement;
-import de.robv.android.xposed.XSharedPreferences;
-import de.robv.android.xposed.XposedBridge;
+import de.robv.android.xposed.*;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
-import mobi.acpm.inspeckage.hooks.ClipboardHook;
-import mobi.acpm.inspeckage.hooks.CryptoHook;
-import mobi.acpm.inspeckage.hooks.FileSystemHook;
-import mobi.acpm.inspeckage.hooks.FingerprintHook;
-import mobi.acpm.inspeckage.hooks.FlagSecureHook;
-import mobi.acpm.inspeckage.hooks.HashHook;
-import mobi.acpm.inspeckage.hooks.HttpHook;
-import mobi.acpm.inspeckage.hooks.IPCHook;
-import mobi.acpm.inspeckage.hooks.MiscHook;
-import mobi.acpm.inspeckage.hooks.ProxyHook;
-import mobi.acpm.inspeckage.hooks.SQLiteHook;
-import mobi.acpm.inspeckage.hooks.SSLPinningHook;
-import mobi.acpm.inspeckage.hooks.SerializationHook;
-import mobi.acpm.inspeckage.hooks.SharedPrefsHook;
-import mobi.acpm.inspeckage.hooks.UIHook;
-import mobi.acpm.inspeckage.hooks.UserHooks;
-import mobi.acpm.inspeckage.hooks.WebViewHook;
+import mobi.acpm.inspeckage.hooks.*;
 import mobi.acpm.inspeckage.hooks.entities.LocationHook;
 import mobi.acpm.inspeckage.util.Config;
 import mobi.acpm.inspeckage.util.FileType;
@@ -134,44 +113,44 @@ public class Module extends XC_MethodHook implements IXposedHookLoadPackage, IXp
 
         UIHook.initAllHooks(loadPackageParam);
 
-        if(sPrefs.getBoolean(Config.SP_TAB_ENABLE_HTTP,true)) {
+        if (sPrefs.getBoolean(Config.SP_TAB_ENABLE_HTTP, true)) {
             HttpHook.initAllHooks(loadPackageParam);
         }
-        if(sPrefs.getBoolean(Config.SP_TAB_ENABLE_MISC,true)) {
+        if (sPrefs.getBoolean(Config.SP_TAB_ENABLE_MISC, true)) {
             MiscHook.initAllHooks(loadPackageParam);
             ClipboardHook.initAllHooks(loadPackageParam);
         }
-        if(sPrefs.getBoolean(Config.SP_TAB_ENABLE_WV,true)) {
+        if (sPrefs.getBoolean(Config.SP_TAB_ENABLE_WV, true)) {
             WebViewHook.initAllHooks(loadPackageParam);
         }
-        if(sPrefs.getBoolean(Config.SP_TAB_ENABLE_CRYPTO,true)) {
+        if (sPrefs.getBoolean(Config.SP_TAB_ENABLE_CRYPTO, true)) {
             CryptoHook.initAllHooks(loadPackageParam);
         }
-        if(sPrefs.getBoolean(Config.SP_TAB_ENABLE_FS,true)) {
+        if (sPrefs.getBoolean(Config.SP_TAB_ENABLE_FS, true)) {
             FileSystemHook.initAllHooks(loadPackageParam);
         }
         FlagSecureHook.initAllHooks(loadPackageParam);
-        if(sPrefs.getBoolean(Config.SP_TAB_ENABLE_HASH,true)) {
+        if (sPrefs.getBoolean(Config.SP_TAB_ENABLE_HASH, true)) {
             HashHook.initAllHooks(loadPackageParam);
         }
-        if(sPrefs.getBoolean(Config.SP_TAB_ENABLE_IPC,true)) {
+        if (sPrefs.getBoolean(Config.SP_TAB_ENABLE_IPC, true)) {
             IPCHook.initAllHooks(loadPackageParam);
         }
         ProxyHook.initAllHooks(loadPackageParam);// --
-        if(sPrefs.getBoolean(Config.SP_TAB_ENABLE_SHAREDP,true)) {
+        if (sPrefs.getBoolean(Config.SP_TAB_ENABLE_SHAREDP, true)) {
             SharedPrefsHook.initAllHooks(loadPackageParam);
         }
-        if(sPrefs.getBoolean(Config.SP_TAB_ENABLE_SQLITE,true)) {
+        if (sPrefs.getBoolean(Config.SP_TAB_ENABLE_SQLITE, true)) {
             SQLiteHook.initAllHooks(loadPackageParam);
         }
         SSLPinningHook.initAllHooks(loadPackageParam);// --
-        if(sPrefs.getBoolean(Config.SP_TAB_ENABLE_SERIALIZATION,true)) {
+        if (sPrefs.getBoolean(Config.SP_TAB_ENABLE_SERIALIZATION, true)) {
             SerializationHook.initAllHooks(loadPackageParam);
         }
-        if(sPrefs.getBoolean(Config.SP_TAB_ENABLE_PHOOKS,true)) {
+        if (sPrefs.getBoolean(Config.SP_TAB_ENABLE_PHOOKS, true)) {
             UserHooks.initAllHooks(loadPackageParam);
         }
-        if(sPrefs.getBoolean(Config.SP_GEOLOCATION_SW,false)) {
+        if (sPrefs.getBoolean(Config.SP_GEOLOCATION_SW, false)) {
             LocationHook.initAllHooks(loadPackageParam);
         }
         FingerprintHook.initAllHooks(loadPackageParam);
@@ -179,7 +158,7 @@ public class Module extends XC_MethodHook implements IXposedHookLoadPackage, IXp
         //DexUtil.saveClassesWithMethodsJson(loadPackageParam, sPrefs);
     }
 
-    public static void logError(Error e){
+    public static void logError(Error e) {
         XposedBridge.log(Module.ERROR + " " + e.getMessage());
     }
 }

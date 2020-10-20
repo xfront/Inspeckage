@@ -55,7 +55,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             convertView = infalInflater.inflate(R.layout.list_item, null);
         }
 
-        ImageView iconImage = (ImageView)convertView.findViewById(R.id.imageViewIcon);
+        ImageView iconImage = (ImageView) convertView.findViewById(R.id.imageViewIcon);
         iconImage.setImageDrawable(childText.getIcon());
 
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(90, 90);
@@ -68,15 +68,15 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         txtListPkg.setText(childText.getPckName());
 
         /**
-        if(childText.isSelected()) {
-            txtListChild.setTextColor(0xFF00BFA5);
-            txtListPkg.setTextColor(0xFF00BFA5);
-        }else{
-            txtListChild.setTextColor(Color.BLACK);
-            txtListPkg.setTextColor(Color.BLACK);
-            txtListChild.setBackgroundColor(Color.WHITE);
-            txtListPkg.setBackgroundColor(Color.WHITE);
-        }**/
+         if(childText.isSelected()) {
+         txtListChild.setTextColor(0xFF00BFA5);
+         txtListPkg.setTextColor(0xFF00BFA5);
+         }else{
+         txtListChild.setTextColor(Color.BLACK);
+         txtListPkg.setTextColor(Color.BLACK);
+         txtListChild.setBackgroundColor(Color.WHITE);
+         txtListPkg.setBackgroundColor(Color.WHITE);
+         }**/
 
         return convertView;
     }

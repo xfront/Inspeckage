@@ -13,42 +13,42 @@ import java.util.Collection;
  */
 public class WSocketServer extends WebSocketServer {
 
-    public WSocketServer( int port ) throws UnknownHostException {
-        super( new InetSocketAddress( port ) );
+    public WSocketServer(int port) throws UnknownHostException {
+        super(new InetSocketAddress(port));
     }
 
-    public WSocketServer( InetSocketAddress address ) {
-        super( address );
+    public WSocketServer(InetSocketAddress address) {
+        super(address);
     }
 
     @Override
     public void onOpen(WebSocket webSocket, ClientHandshake clientHandshake) {
-        this.sendToClient( "[Handshake Ok]");
+        this.sendToClient("[Handshake Ok]");
     }
 
     @Override
     public void onClose(WebSocket webSocket, int i, String s, boolean b) {
-        this.sendToClient(webSocket + " close" );
+        this.sendToClient(webSocket + " close");
     }
 
     @Override
     public void onMessage(WebSocket webSocket, String message) {
-        this.sendToClient(message );
+        this.sendToClient(message);
     }
 
     @Override
     public void onError(WebSocket webSocket, Exception e) {
         e.printStackTrace();
-        if( webSocket != null ) {
+        if (webSocket != null) {
             // some errors like port binding failed may not be assignable to a specific websocket
         }
     }
 
-    public void sendToClient( String text ) {
+    public void sendToClient(String text) {
         Collection<WebSocket> con = connections();
-        synchronized ( con ) {
-            for( WebSocket c : con ) {
-                c.send( text );
+        synchronized (con) {
+            for (WebSocket c : con) {
+                c.send(text);
             }
         }
     }

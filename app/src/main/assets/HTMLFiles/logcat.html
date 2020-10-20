@@ -17,6 +17,7 @@
         .navbar-form {
         background-color: #fff;
         }
+
     </style>
 
     <script type="text/javascript" src="/js/prototype.min.js"></script>
@@ -36,7 +37,8 @@
                     <!-- Brand and toggle get grouped for better mobile display -->
                     <div class="navbar-header">
 
-                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                                data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                             <span class="sr-only">Toggle navigation</span>
                         </button>
 
@@ -56,11 +58,13 @@
                             <input type="checkbox" id="inlineCheckbox5" value="F"> Fatal
                             <input type="checkbox" id="inlineCheckbox6" value="V"> Verbose
 
-                            <button type="button" id="startWS" onclick="startWSocket();" class="btn btn-default" data-toggle="tooltip" title="Start Web Socket">
+                            <button type="button" id="startWS" onclick="startWSocket();" class="btn btn-default"
+                                    data-toggle="tooltip" title="Start Web Socket">
                                 <span aria-hidden="true">Start</span>
                             </button>
 
-                            <button type="button" id="stopWS" onclick="stopWSocket();" active="false" class="btn btn-default" data-toggle="modal" data-toggle="tooltip" title="Start Web Socket" disabled="disabled">
+                            <button type="button" id="stopWS" onclick="stopWSocket();" active="false" class="btn btn-default"
+                                    data-toggle="modal" data-toggle="tooltip" title="Start Web Socket" disabled="disabled">
                                 <span aria-hidden="true">Stop</span>
                             </button>
 
@@ -71,7 +75,7 @@
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
                         <ul class="nav navbar-nav navbar-right">
-                            <li> <a href="https://github.com/ac-pm/Inspeckage"> GitHub</a>
+                            <li><a href="https://github.com/ac-pm/Inspeckage"> GitHub</a>
                             </li>
                         </ul>
                         </ul>
@@ -117,7 +121,8 @@
 
     <div class="row">
         <div class="col-md-12">
-            <form><textarea id="log" rows="20" style="font-family:monospace; color:blue; width:100%;"></textarea></form><br>
+            <form><textarea id="log" rows="20" style="font-family:monospace; color:blue; width:100%;"></textarea></form>
+            <br>
         </div>
     </div>
     <input type="button" id="clear" value="Clear" class="btn btn-default btn-sm pull-right">

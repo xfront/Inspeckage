@@ -30,7 +30,7 @@ public class CryptoHook extends XC_MethodHook {
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 
                 sb = new StringBuffer();
-                sb.append("SecretKeySpec(" + Util.byteArrayToString((byte[]) param.args[0]) + ","+(String) param.args[1]+")");
+                sb.append("SecretKeySpec(" + Util.byteArrayToString((byte[]) param.args[0]) + "," + (String) param.args[1] + ")");
             }
 
         });
@@ -105,7 +105,7 @@ public class CryptoHook extends XC_MethodHook {
                 if (sb == null)
                     sb = new StringBuffer();
 
-                sb.append("[PBEKeySpec] - Password: " + String.valueOf((char[])param.args[0]) + " || Salt: " +  Util.byteArrayToString((byte[])param.args[1]));
+                sb.append("[PBEKeySpec] - Password: " + String.valueOf((char[]) param.args[0]) + " || Salt: " + Util.byteArrayToString((byte[]) param.args[1]));
                 XposedBridge.log(TAG + sb.toString());
                 sb = new StringBuffer();
             }

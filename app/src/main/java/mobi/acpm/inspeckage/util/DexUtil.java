@@ -10,11 +10,7 @@ import com.google.gson.JsonObject;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import dalvik.system.DexFile;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
@@ -115,7 +111,7 @@ public class DexUtil {
                 for (String method : methods) {
                     m_id++;
                     ClassMethod m = new ClassMethod();
-                    m.setID("m_" + c_id+"_"+m_id);//
+                    m.setID("m_" + c_id + "_" + m_id);//
                     m.setName(method);
                     m.setIcon("jstree-file");
                     if (!class_leaf.contains(m)) {

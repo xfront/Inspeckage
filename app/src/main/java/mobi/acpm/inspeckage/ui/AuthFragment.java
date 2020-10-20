@@ -56,6 +56,7 @@ public class AuthFragment extends Fragment {
     public AuthFragment() {
         // Required empty public constructor
     }
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -97,7 +98,7 @@ public class AuthFragment extends Fragment {
         final Switch mSwitch = (Switch) view.findViewById(R.id.auth_switch);
 
         String login = mPrefs.getString(Config.SP_USER_PASS, "");
-        if(!login.trim().equals("")) {
+        if (!login.trim().equals("")) {
             txtLogin.setText(login.split(":")[0]);
             txtPass.setText(login.split(":")[1]);
         }
@@ -153,17 +154,17 @@ public class AuthFragment extends Fragment {
                 TextView txtLogin = (TextView) view.findViewById(R.id.txtLogin);
                 TextView txtPass = (TextView) view.findViewById(R.id.txtPass);
 
-                edit.putString(Config.SP_USER_PASS, txtLogin.getText()+":"+txtPass.getText());
+                edit.putString(Config.SP_USER_PASS, txtLogin.getText() + ":" + txtPass.getText());
                 edit.apply();
 
                 stopService();
 
                 String host = null;
                 int port = mPrefs.getInt(Config.SP_SERVER_PORT, 8008);
-                if(!mPrefs.getString(Config.SP_SERVER_HOST, "All interfaces").equals("All interfaces")){
+                if (!mPrefs.getString(Config.SP_SERVER_HOST, "All interfaces").equals("All interfaces")) {
                     host = mPrefs.getString(Config.SP_SERVER_HOST, "All interfaces");
                 }
-                startService(host,port);
+                startService(host, port);
             }
         });
 
@@ -185,7 +186,7 @@ public class AuthFragment extends Fragment {
             mListener = (OnFragmentInteractionListener) context;
         } else {
             //throw new RuntimeException(context.toString()
-             //       + " must implement OnFragmentInteractionListener");
+            //       + " must implement OnFragmentInteractionListener");
         }
     }
 

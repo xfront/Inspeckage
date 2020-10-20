@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE"></uses-permission>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -39,7 +40,8 @@
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
-        <activity android:name=".ui.SplashActivity"
+        <activity
+            android:name=".ui.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
             <intent-filter>
@@ -49,12 +51,15 @@
             </intent-filter>
         </activity>
 
-        <meta-data android:name="com.google.android.gms.version"
+        <meta-data
+            android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <receiver android:name=".receivers.InspeckageWebReceiver"  android:exported="false">
+        <receiver
+            android:name=".receivers.InspeckageWebReceiver"
+            android:exported="false">
             <intent-filter>
-                <action android:name="mobi.acpm.inspeckage.INSPECKAGE_FILTER"/>
+                <action android:name="mobi.acpm.inspeckage.INSPECKAGE_FILTER" />
             </intent-filter>
         </receiver>
 

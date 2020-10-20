@@ -45,15 +45,16 @@ public class UserHooks extends XC_MethodHook {
         String json = "{\"hookJson\": " + sPrefs.getString(Config.SP_USER_HOOKS, "") + "}";
         try {
 
-            if(!json.trim().equals("{\"hookJson\":}")) {
+            if (!json.trim().equals("{\"hookJson\":}")) {
                 HookList hookList = gson.fromJson(json, HookList.class);
                 for (HookItem hookItem : hookList.hookJson) {
-                    if(hookItem.state) {
+                    if (hookItem.state) {
                         hook(hookItem, loadPackageParam.classLoader);
                     }
                 }
             }
-        } catch (JsonSyntaxException ex) { }
+        } catch (JsonSyntaxException ex) {
+        }
     }
 
     static void hook(HookItem item, ClassLoader classLoader) {
@@ -70,7 +71,7 @@ public class UserHooks extends XC_MethodHook {
                     }
                 } else {
                     for (Method method : hookClass.getDeclaredMethods()) {
-                        if(!Modifier.isAbstract(method.getModifiers())) {
+                        if (!Modifier.isAbstract(method.getModifiers())) {
                             XposedBridge.hookMethod(method, methodHook);
                         }
                     }
@@ -109,19 +110,19 @@ public class UserHooks extends XC_MethodHook {
             JSONObject hookData = new JSONObject();
             hookData.put("class", param.method.getDeclaringClass().getName());
 
-            if(param.method!=null)
+            if (param.method != null)
                 hookData.put("method", param.method.getName());
 
             JSONArray args = new JSONArray();
 
-            if(param.args!=null) {
+            if (param.args != null) {
                 for (Object object : (Object[]) param.args) {
 
                     if (object != null) {
-                        if(object.getClass().equals(byte[].class)){
-                            String result = Util.byteArrayToString((byte[])object);
+                        if (object.getClass().equals(byte[].class)) {
+                            String result = Util.byteArrayToString((byte[]) object);
                             args.put(gson.toJson(result));
-                        }else{
+                        } else {
                             args.put(gson.toJson(object));
                         }
                     }
@@ -129,12 +130,12 @@ public class UserHooks extends XC_MethodHook {
                 hookData.put("args", args);
             }
 
-            if(param.getResult()!=null){
+            if (param.getResult() != null) {
                 String result = "";
-                if(param.getResult().getClass().equals(byte[].class)){
-                    result = Util.byteArrayToString((byte[])param.getResult());
+                if (param.getResult().getClass().equals(byte[].class)) {
+                    result = Util.byteArrayToString((byte[]) param.getResult());
                     hookData.put("result", gson.toJson(result));
-                }else{
+                } else {
                     hookData.put("result", gson.toJson(param.getResult()));
                 }
 
