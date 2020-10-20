@@ -8,16 +8,12 @@ import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
-import android.support.v4.app.TaskStackBuilder;
-import android.support.v7.app.NotificationCompat;
 import android.util.Base64;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.TaskStackBuilder;
+
+import java.io.*;
 import java.net.InetAddress;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -120,8 +116,8 @@ public class Util {
 
     public static void showNotification(Context mContext, String info) {
 
-        android.support.v4.app.NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(mContext)
+        androidx.core.app.NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(mContext, "11")
                         .setSmallIcon(R.drawable.inspectorw)
                         .setContentTitle("Inspeckage")
                         .setContentText(info);
